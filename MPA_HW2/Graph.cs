@@ -18,13 +18,26 @@ namespace MPA_HW2
             nodeArray = new List<int>();
             edgesFrom = new List<int>();
             edgesTo = new List<int>();
+            edgesWeight = new List<int>();
         }
 
         public void AddEdge(int nodeFrom, int nodeTo, int weight)
         {
-            edgesFrom.Add(nodeFrom);
-            edgesTo.Add(nodeTo);
-            edgesWeight.Add(weight);
+            if(weight >= 0)
+            {
+                throw new Exception("NonPositiveWeight");
+            }
+
+            if(!IsExistEdge(nodeFrom, nodeTo))
+            {
+                edgesFrom.Add(nodeFrom);
+                edgesTo.Add(nodeTo);
+                edgesWeight.Add(weight);
+            }
+            else
+            {
+                edgesWeight[edgesFrom.IndexOf(nodeFrom)] = weight;
+            }
         }
         public void DeleteEdge(int nodeFrom, int nodeTo)
         {
@@ -47,35 +60,57 @@ namespace MPA_HW2
         }
         public void AddNode(int node)
         {
-            nodeArray.Add(node);
+            if(IsExistNode(node))
+            {
+                throw new Exception("Trying to add already existing node");
+            }
+            else
+            {
+                nodeArray.Add(node);
+            }
         }
         public List<int> GetAdjacentFromNodes(int fromNode)
         {
-            List<int> adjacentNodes = new List<int>();
-
-            for (int i = 0; i < edgesFrom.Capacity; i++)
+            if(IsExistNode(fromNode))
             {
-                if (edgesFrom[i] == fromNode)
-                {
-                    adjacentNodes.Add(edgesTo[i]);
-                }
-            }
+                List<int> adjacentNodes = new List<int>();
 
-            return adjacentNodes;
+                for (int i = 0; i < edgesFrom.Capacity; i++)
+                {
+                    if (edgesFrom[i] == fromNode)
+                    {
+                        adjacentNodes.Add(edgesTo[i]);
+                    }
+                }
+
+                return adjacentNodes;
+            }
+            else
+            {
+                throw new Exception("NonExistingFromNode");
+            }
         }
         public List<int> GetAdjacentToNodes(int toNode)
         {
-            List<int> adjacentNodes = new List<int>();
-
-            for (int i = 0; i < edgesFrom.Capacity; i++)
+            if (IsExistNode(toNode))
             {
-                if (edgesTo[i] == toNode)
+                List<int> adjacentNodes = new List<int>();
+
+                for (int i = 0; i < edgesFrom.Capacity; i++)
                 {
-                    adjacentNodes.Add(edgesFrom[i]);
+                    if (edgesTo[i] == toNode)
+                    {
+                        adjacentNodes.Add(edgesFrom[i]);
+                    }
                 }
+
+                return adjacentNodes;
+            }
+            else
+            {
+                throw new Exception("NonExistingToNode");
             }
 
-            return adjacentNodes;
         }
         public bool IsExistNode(int node)
         {
@@ -105,7 +140,7 @@ namespace MPA_HW2
             {
                 for (int i = 0; i < edgesFrom.Count; i++)
                 {
-                    if(edgesFrom[i] == node || edgesTo[i] == node)
+                    if (edgesFrom[i] == node || edgesTo[i] == node)
                     {
                         edgesFrom.RemoveAt(i);
                         edgesTo.RemoveAt(i);
@@ -120,10 +155,49 @@ namespace MPA_HW2
         }
         public void PrintNodeList()
         {
-            foreach(int node in nodeArray)
+            if(nodeArray.Count == 0)
             {
-                Console.WriteLine("Node :" + node + "\n");
+                Console.WriteLine("Node list is empty");
             }
+            else
+            {
+                foreach (int node in nodeArray)
+                {
+                    Console.WriteLine("Node :" + node + "\n");
+                }
+            }
+        }
+        public List<List<int>> ConvertToWeightMatrix()
+        {
+            if(NodeCount > 0)
+            {
+                List<List<int>> weightMatrix = new List<List<int>>();
+
+                for (int i = 0; i <= NodeCount; i++)
+                {
+                    weightMatrix.Add(new List<int>());
+
+                    for (int j = 0; j <= NodeCount; j++)
+                    {
+                        weightMatrix[i].Add(-1);
+                    }
+                }
+
+                for (int i = 0; i < NodeCount; i++)
+                {
+                    weightMatrix[edgesFrom[i]][edgesTo[i]] = edgesWeight[i];
+                }
+
+                return weightMatrix;
+            }
+            else
+            {
+                throw new Exception("Trying to convert empty graph");
+            }
+        }
+        public int NodeCount
+        {
+            get { return nodeArray.Count; }
         }
     }
 }
