@@ -8,25 +8,19 @@ namespace MPA_HW2.Test
     public class GraphAlgorithmTest
     {
         [TestMethod]
-        public void FloydWarshall_Empty_Exception()
-        {
-            //arrange
-            Graph graph = new Graph();
-
-            //assert
-            var ex = Assert.ThrowsException<Exception>(() => GraphAlgorithm.FloydWarshallFind(graph));
-            Assert.AreEqual(ex.Message, "EmptyGraph");
-        }
-
-        [TestMethod]
         public void FindMinWay_Empty_Exception()
         {
             //arrange
             Graph graph = new Graph();
 
+            string expected = "EmptyGraph";
+
+            //act
+            Exception exception = Assert.ThrowsException<Exception>(() => GraphAlgorithm.FindMinWay(graph));
+            string actual = exception.Message;
+
             //assert
-            var ex = Assert.ThrowsException<Exception>(() => GraphAlgorithm.FindMinWay(graph));
-            Assert.AreEqual(ex.Message, "EmptyGraph");
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -60,6 +54,70 @@ namespace MPA_HW2.Test
             int actual = 3;
 
             //assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FindMinWay_1Edge_EdgeWeightReturned()
+        {
+            //arrange
+            Graph graph = new Graph();
+
+            graph.AddNode(1);
+            graph.AddNode(2);
+
+            graph.AddEdge(1, 2, 7);
+
+            //act
+            int expected = GraphAlgorithm.FindMinWay(graph);
+            int actual = 7;
+
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FindMinWay_2NonConnectedEdges_LessEdgeWeightReturned()
+        {
+            //arrange
+            Graph graph = new Graph();
+
+            graph.AddNode(1);
+            graph.AddNode(2);
+            graph.AddNode(5);
+            graph.AddNode(6);
+
+            graph.AddEdge(1, 2, 7);
+            graph.AddEdge(5, 6, 17);
+
+            //act
+            int expected = GraphAlgorithm.FindMinWay(graph);
+            int actual = 7;
+
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FindMinWay_NonEdged_Exception()
+        {
+            //arrange
+            Graph graph = new Graph();
+
+            graph.AddNode(1);
+            graph.AddNode(2);
+            graph.AddNode(3);
+            graph.AddNode(4);
+            graph.AddNode(5);
+
+            string expected = "NonEdgedGraph";
+
+            //act
+            Exception exception = Assert.ThrowsException<Exception>(() => GraphAlgorithm.FindMinWay(graph));
+            string actual = exception.Message;
+
+            //assert
+
             Assert.AreEqual(expected, actual);
         }
     }

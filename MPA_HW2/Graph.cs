@@ -23,7 +23,7 @@ namespace MPA_HW2
 
         public void AddEdge(int nodeFrom, int nodeTo, int weight)
         {
-            if(weight >= 0)
+            if(weight <= 0)
             {
                 throw new Exception("NonPositiveWeight");
             }
@@ -36,7 +36,7 @@ namespace MPA_HW2
             }
             else
             {
-                edgesWeight[edgesFrom.IndexOf(nodeFrom)] = weight;
+                throw new Exception("Add already existing edge");
             }
         }
         public void DeleteEdge(int nodeFrom, int nodeTo)
@@ -173,19 +173,19 @@ namespace MPA_HW2
             {
                 List<List<int>> weightMatrix = new List<List<int>>();
 
-                for (int i = 0; i <= NodeCount; i++)
+                for (int i = 0; i < NodeCount; i++)
                 {
                     weightMatrix.Add(new List<int>());
 
-                    for (int j = 0; j <= NodeCount; j++)
+                    for (int j = 0; j < NodeCount; j++)
                     {
                         weightMatrix[i].Add(-1);
                     }
                 }
 
-                for (int i = 0; i < NodeCount; i++)
+                for (int i = 0; i < EdgeCount; i++)
                 {
-                    weightMatrix[edgesFrom[i]][edgesTo[i]] = edgesWeight[i];
+                    weightMatrix[nodeArray.IndexOf(edgesFrom[i])][nodeArray.IndexOf(edgesTo[i])] = edgesWeight[i];
                 }
 
                 return weightMatrix;
@@ -198,6 +198,10 @@ namespace MPA_HW2
         public int NodeCount
         {
             get { return nodeArray.Count; }
+        }
+        public int EdgeCount
+        {
+            get { return edgesFrom.Count; }
         }
     }
 }

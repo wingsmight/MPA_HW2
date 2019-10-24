@@ -8,7 +8,15 @@ namespace MPA_HW2
         static void Main(string[] args)
         {
             Graph graph = new Graph();
-            GraphAlgorithm.FillRandomGraph(graph, 100);
+
+            graph.AddNode(1);
+            graph.AddNode(2);
+            graph.AddNode(5);
+            graph.AddNode(6);
+
+            graph.AddEdge(1, 2, 7);
+            graph.AddEdge(5, 6, 17);
+
             int minWay = GraphAlgorithm.FindMinWay(graph);
 
             Console.WriteLine(minWay);

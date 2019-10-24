@@ -44,19 +44,26 @@ namespace MPA_HW2
         {
             List<List<int>> matrix = FloydWarshallFind(graph);
 
-            int minWay = int.MaxValue;
-            foreach (List<int> line in matrix)
+            if(graph.EdgeCount > 0)
             {
-                foreach (int way in line)
+                int minWay = int.MaxValue;
+                foreach (List<int> line in matrix)
                 {
-                    if (way < minWay && way != -1)
+                    foreach (int way in line)
                     {
-                        minWay = way;
+                        if (way < minWay && way != -1)
+                        {
+                            minWay = way;
+                        }
                     }
                 }
-            }
 
-            return minWay;
+                return minWay;
+            }
+            else
+            {
+                throw new Exception("NonEdgedGraph");
+            }
         }
         public static List<List<int>> FloydWarshallFind(Graph graph)
         {
