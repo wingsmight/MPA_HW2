@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MPA_HW2
 {
@@ -28,15 +25,22 @@ namespace MPA_HW2
                 throw new Exception("NonPositiveWeight");
             }
 
-            if(!IsExistEdge(nodeFrom, nodeTo))
+            if(!IsExistNode(nodeFrom) || !IsExistNode(nodeTo))
             {
-                edgesFrom.Add(nodeFrom);
-                edgesTo.Add(nodeTo);
-                edgesWeight.Add(weight);
+                throw new Exception("NonExistingNode");
             }
             else
             {
-                throw new Exception("Add already existing edge");
+                if (!IsExistEdge(nodeFrom, nodeTo))
+                {
+                    edgesFrom.Add(nodeFrom);
+                    edgesTo.Add(nodeTo);
+                    edgesWeight.Add(weight);
+                }
+                else
+                {
+                    throw new Exception("Add already existing edge");
+                }
             }
         }
         public void DeleteEdge(int nodeFrom, int nodeTo)
