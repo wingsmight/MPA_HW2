@@ -25,15 +25,14 @@ namespace MPA_HW2
             Random random = new Random();
             for (int i = 0; i < count; i++)
             {
+                Console.WriteLine(i + " of " + count);
                 for (int j = 0; j < count; j++)
                 {
-                    int randomWeight = random.Next(-1000, 1000000);
-                    if (randomWeight <= 0)
+                    int randomWeight = random.Next(-10000, 1000000);
+                    if (randomWeight > 0)
                     {
-                        randomWeight = -1;
-                    }
-
-                    graph.AddEdge(i, j, randomWeight);
+                        graph.AddEdge(i, j, randomWeight);
+                    }                    
                 }
             }
         }

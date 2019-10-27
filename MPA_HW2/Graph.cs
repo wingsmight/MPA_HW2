@@ -22,7 +22,7 @@ namespace MPA_HW2
         {
             if(weight <= 0)
             {
-                throw new Exception("NonPositiveWeight");
+                throw new Exception("NonPositiveWeight = " + weight);
             }
 
             if(!IsExistNode(nodeFrom) || !IsExistNode(nodeTo))
@@ -64,11 +64,7 @@ namespace MPA_HW2
         }
         public void AddNode(int node)
         {
-            if(IsExistNode(node))
-            {
-                throw new Exception("Trying to add already existing node");
-            }
-            else
+            if(!IsExistNode(node))
             {
                 nodeArray.Add(node);
             }
@@ -142,6 +138,8 @@ namespace MPA_HW2
         {
             if (IsExistNode(node))
             {
+                nodeArray.Remove(node);
+
                 for (int i = 0; i < edgesFrom.Count; i++)
                 {
                     if (edgesFrom[i] == node || edgesTo[i] == node)
@@ -149,6 +147,8 @@ namespace MPA_HW2
                         edgesFrom.RemoveAt(i);
                         edgesTo.RemoveAt(i);
                         edgesWeight.RemoveAt(i);
+
+                        i--;
                     }
                 }
             }
